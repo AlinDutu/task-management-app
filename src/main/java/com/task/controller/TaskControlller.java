@@ -1,6 +1,7 @@
 package com.task.controller;
 
 import com.task.domain.model.Task;
+import com.task.domain.model.User;
 import com.task.exception.UserNotFoundException;
 import com.task.service.TaskService;
 
@@ -37,9 +38,10 @@ public class TaskControlller {
         return taskService.getAllTasks();
     }
 
-    @PostMapping
+    @PostMapping("/createTask")
     @ResponseStatus(HttpStatus.CREATED)
     public Task createTask(@PathVariable("userId") long userId, @RequestBody Task task) {
+        System.out.println("aici");
         return taskService.createTask(userId, task);
     }
 
@@ -47,4 +49,10 @@ public class TaskControlller {
     public void notFound(HttpServletResponse response, Exception e) throws IOException {
         response.sendError(NOT_FOUND.value(), e.getMessage());
     }
+
+
+
+
+
+
 }

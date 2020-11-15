@@ -71,7 +71,6 @@ public class UserService {
 
     public void update ( User user){
 
-
         UserEntity toReplace = userToUserEntityMapper.convert(user);
 
         userRepository.save(toReplace);
