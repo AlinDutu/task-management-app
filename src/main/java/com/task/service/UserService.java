@@ -9,13 +9,12 @@ import com.task.repository.UserRepository;
 
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @AllArgsConstructor
@@ -37,39 +36,36 @@ public class UserService {
     }
 
     // == Aduce toata lista de useri ==
-    public List<User> getAllUsers() {
+    public List<User> getAllUsersByLastName(String lastName, int age, String firstName) {
 
-        List<UserEntity> allTasks = userRepository.findAll();
+        List<UserEntity> allTasks = userRepository.findAllByLastNameAndAgeAfterAndFirstName(lastName, age, firstName);
 
-        return allTasks
-                .stream()
-                .map(userEntityToUserMapper::convert)
-                .collect(Collectors.toList());
+        return allTasks.stream()
+                       .map(userEntityToUserMapper::convert)
+                       .collect(Collectors.toList());
 
     }
 
     //== Aduce un user dupa un id ==
     public User getById(long id) {
 
-       Optional <UserEntity> OptionalUser = userRepository.findById(id);
+        Optional<UserEntity> optionalUser = userRepository.findById(id);
 
-        if(OptionalUser.isEmpty()){
-            throw new UserNotFoundException(String.format("User with id: %d, could not be found.",id));
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException(String.format("User with id: %d could not be found.", id));
         }
 
-        UserEntity userEntity = OptionalUser.get();
-        User user= userEntityToUserMapper.convert(userEntity);
+        UserEntity userEntity = optionalUser.get();
 
-
-        return user;
+        return userEntityToUserMapper.convert(userEntity);
     }
 
     // === Sterge dupa id ===
-    public void DeleteById(long id){
+    public void deleteById(long id) {
         userRepository.deleteById(id);
     }
 
-    public void update ( User user){
+    public void update(User user) {
 
         UserEntity toReplace = userToUserEntityMapper.convert(user);
 

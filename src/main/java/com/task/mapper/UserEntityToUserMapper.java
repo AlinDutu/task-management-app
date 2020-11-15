@@ -36,8 +36,8 @@ public class UserEntityToUserMapper implements Converter<UserEntity, User> {
                    .build();
     }
 
-    private List<Task> mapTaskEntities(UserEntity source) {
-        List<TaskEntity> tasks = source.getTasks();
+    private List<Task> mapTaskEntities(UserEntity userEntity) {
+        List<TaskEntity> tasks = userEntity.getTasks();
         if (tasks == null) return null;
         return tasks.stream()
                     //.map(taskEntityToTaskMapper::convert)

@@ -14,6 +14,7 @@ public class TaskToTaskEntityMapper implements Converter<Task, TaskEntity> {
     @Override
     public TaskEntity convert(Task source) {
         return TaskEntity.builder()
+                         .id(source.getId())
                          .name(source.getName())
                          .description(source.getDescription())
                          .deadline(source.getDeadline())

@@ -1,14 +1,12 @@
 package com.task.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.task.domain.entity.TaskEntity;
 import com.task.domain.entity.UserEntity;
 import com.task.domain.model.Task;
-import com.task.domain.model.User;
+import com.task.exception.TaskNotFoundException;
 import com.task.exception.UserNotFoundException;
 import com.task.mapper.TaskEntityToTaskMapper;
 import com.task.mapper.TaskToTaskEntityMapper;
-import com.task.mapper.UserEntityToUserMapper;
 import com.task.repository.TaskRepository;
 import com.task.repository.UserRepository;
 
@@ -35,14 +33,12 @@ public class TaskService {
 
     private final TaskToTaskEntityMapper taskToTaskEntityMapper;
 
-
-
     public Task createTask(long userId, Task task) {
         //null --> Optional gol
         Optional<UserEntity> optionalUserEntity = userRepository.findById(userId);
 
-        if(optionalUserEntity.isEmpty()){
-            throw new UserNotFoundException(String.format("User with id: %d, could not be found.",userId));
+        if (optionalUserEntity.isEmpty()) {
+            throw new UserNotFoundException(String.format("User with id: %d, could not be found.", userId));
         }
 
         UserEntity userEntity = optionalUserEntity.get();
@@ -65,7 +61,25 @@ public class TaskService {
     }
 
 
+    public void updateTask(long userId, Task task) {
 
+        if (userRepository.findById(userId).isEmpty()) {
+            throw new UserNotFoundException(String.format("User with id: %d could not be found.", userId));
+        }
 
+        long taskId = task.getId();
+        Optional<TaskEntity> optionalTaskEntity = taskRepository.findById(taskId);
 
+        if (optionalTaskEntity.isEmpty()) {
+            throw new TaskNotFoundException(String.format("Task with id: %d could not be found.", taskId));
+        }
+
+//        TaskEntity taskEntity = taskToTaskEntityMapper.convert(task);
+        TaskEntity taskEntity = optionalTaskEntity.get();
+        taskEntity.setName(task.getName());
+        taskEntity.setDeadline(task.getDeadline());
+        taskEntity.setDescription(task.getDescription());
+
+        taskRepository.save(taskEntity);
+    }
 }
