@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.task.domain.entity.TaskEntity;
 import com.task.domain.entity.UserEntity;
 import com.task.domain.model.Task;
+import com.task.domain.model.User;
 import com.task.exception.UserNotFoundException;
 import com.task.mapper.TaskEntityToTaskMapper;
 import com.task.mapper.TaskToTaskEntityMapper;
+import com.task.mapper.UserEntityToUserMapper;
 import com.task.repository.TaskRepository;
 import com.task.repository.UserRepository;
 
@@ -32,6 +34,8 @@ public class TaskService {
     private final TaskEntityToTaskMapper taskEntityToTaskMapper;
 
     private final TaskToTaskEntityMapper taskToTaskEntityMapper;
+
+
 
     public Task createTask(long userId, Task task) {
         //null --> Optional gol
@@ -59,4 +63,8 @@ public class TaskService {
                 .map(taskEntityToTaskMapper::convert)
                 .collect(Collectors.toList());
     }
+
+
+
+
 }
